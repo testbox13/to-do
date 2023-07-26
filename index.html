@@ -2,14 +2,16 @@
 <html>
 <head>
   <title>To-Do List</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>To-Do List</h1>
-  <ul id="task-list"></ul>
+  <ul class="task-list">
+  </ul>
   <input type="text" id="task-input">
   <button id="add-task-button">Add Task</button>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
   var taskList = $("#task-list");
