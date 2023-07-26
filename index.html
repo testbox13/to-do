@@ -2,13 +2,32 @@
 <html>
 <head>
   <title>To-Do List</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
   <h1>To-Do List</h1>
-  <ul>
-    <li>Task 1</li>
-    <li>Task 2</li>
-    <li>Task 3</li>
-  </ul>
+  <ul id="task-list"></ul>
+  <input type="text" id="task-input">
+  <button id="add-task-button">Add Task</button>
 </body>
+<script>
+$(document).ready(function() {
+  var taskList = $("#task-list");
+  var taskInput = $("#task-input");
+  var addTaskButton = $("#add-task-button");
+
+  addTaskButton.click(function() {
+    var task = taskInput.val();
+    taskInput.val("");
+    var li = $("<li></li>");
+    li.text(task);
+    li.append($("<input type='checkbox'>"));
+    taskList.append(li);
+  });
+
+  taskList.on("click", "input[type='checkbox']", function() {
+    $(this).closest("li").remove();
+  });
+});
+</script>
 </html>
