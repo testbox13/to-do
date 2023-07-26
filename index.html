@@ -1,83 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>To-Do List</title>
-  <link rel="stylesheet" href="style.css">
+<title>To-Do List</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>To-Do List</h1>
-  <ul class="task-list">
-  </ul>
-  <input type="text" id="task-input">
-  <button id="add-task-button">Add Task</button>
-  <button id="graph-button">Graph</button>
+<h1>To-Do List</h1>
+<input type="text" id="task" placeholder="Enter a task">
+<button id="add-task">Add Task</button>
+<ul id="tasks"></ul>
+<button id="graph">Graph</button>
+<script src="script.js"></script>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-  var taskList = $("#task-list");
-  var taskInput = $("#task-input");
-  var addTaskButton = $("#add-task-button");
-  var graphButton = $("#graph-button");
-
-  addTaskButton.click(function() {
-    var task = taskInput.val();
-    taskInput.val("");
-    var li = $("<li></li>");
-    li.text(task);
-    li.append($("<input type='checkbox'>"));
-    taskList.append(li);
-  });
-
-  taskList.on("click", "input[type='checkbox']", function() {
-    $(this).closest("li").remove();
-  });
-
-  graphButton.click(function() {
-    var tasks = [];
-    taskList.children("li").each(function() {
-      var task = $(this);
-      var importance = parseInt(task.data("importance"));
-      var urgency = parseInt(task.data("urgency"));
-      tasks.push({
-        task: task.text(),
-        importance: importance,
-        urgency: urgency,
-      });
-    });
-
-    var graph = new Chart("graph", {
-      type: "bar",
-      data: {
-        labels: ["High Importance, High Urgency", "High Importance, Low Urgency", "Low Importance, High Urgency", "Low Importance, Low Urgency"],
-        datasets: [
-          {
-            label: "Tasks",
-            data: tasks.map(function(task) {
-              return task.importance * task.urgency;
-            }),
-            backgroundColor: [
-              "red",
-              "orange",
-              "yellow",
-              "green",
-            ],
-          },
-        ],
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-            },
-          ],
-        },
-      },
-    });
-  });
-});
-</script>
 </html>
