@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>To-Do List</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>To-Do List</h1>
-  <ul class="task-list">
-  </ul>
-  <input type="text" id="task-input">
-  <button id="add-task-button">Add Task</button>
-  <button id="graph-button">Graph</button>
-</body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
+var tasks = [];
+
 $(document).ready(function() {
   var taskList = $("#task-list");
   var taskInput = $("#task-input");
@@ -27,6 +13,11 @@ $(document).ready(function() {
     li.text(task);
     li.append($("<input type='checkbox'>"));
     taskList.append(li);
+
+    var importance = parseInt(Math.random() * 10);
+    var urgency = parseInt(Math.random() * 10);
+    li.data("importance", importance);
+    li.data("urgency", urgency);
   });
 
   taskList.on("click", "input[type='checkbox']", function() {
@@ -34,18 +25,6 @@ $(document).ready(function() {
   });
 
   graphButton.click(function() {
-    var tasks = [];
-    taskList.children("li").each(function() {
-      var task = $(this);
-      var importance = parseInt(task.data("importance"));
-      var urgency = parseInt(task.data("urgency"));
-      tasks.push({
-        task: task.text(),
-        importance: importance,
-        urgency: urgency,
-      });
-    });
-
     var graph = new Chart("graph", {
       type: "bar",
       data: {
@@ -79,5 +58,26 @@ $(document).ready(function() {
     });
   });
 });
-</script>
-</html>
+
+function handleDrag(event) {
+  var li = $(event.target).closest("li");
+  var importance = parseInt(li.data("importance"));
+  var urgency = parseInt(li.data("urgency"));
+
+  var quadrant = getQuadrant(importance, urgency);
+  li.css("left", quadrant * 100 + "%");
+}
+
+function getQuadrant(importance, urgency) {
+  if (importance > 5 && urgency > 5) {
+    return 0;
+  } else if (importance > 5 && urgency < 5) {
+    return 1;
+  } else if (importance < 5 && urgency > 5) {
+    return 2;
+  } else {
+    return 3;
+  }
+}
+
+$(document).on("dragstart", "li", handleDrag);
